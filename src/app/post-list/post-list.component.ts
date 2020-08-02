@@ -64,7 +64,7 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   private getTodos(): Observable<Post[]> {
     return fromFetch(
-      `https://jsonplaceholder.typicode.com/todos?_start=${this.start}&_limit=${this.limit}`
+      `http://localhost:4200/api/posts?start=${this.start}&limit=${this.limit}`
     ).pipe(
       switchMap((res: Response) => {
         if (res.ok) {
