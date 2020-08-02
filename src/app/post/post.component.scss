@@ -1,0 +1,25 @@
+.user-post {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  color: white;
+  background-color: #3E4E6C;
+
+  &__data {
+    &_avatar {
+      width: 45px;
+      height: 45px;
+    }
+  }
+
+  &__content {
+    &_name,
+    &_link,
+    &_text {
+      display: block;
+    }
+  }
+
+  &__activity {
+    flex-basis: 100%;
+  }
+}
