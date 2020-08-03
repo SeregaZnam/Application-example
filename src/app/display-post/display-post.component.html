@@ -1,0 +1,10 @@
+<section class="display-post">
+  <input type="file" (change)="onFileSelected($event)" />
+  <pdf-viewer
+    [src]="pdfSrc$ | async"
+    [render-text]="true"
+    [show-all]="true"
+    [original-size]="false"
+    [autoresize]="true"
+  ></pdf-viewer>
+</section>
