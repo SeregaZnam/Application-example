@@ -1,6 +1,7 @@
 export interface Post {
-  userId: number;
   id: number;
-  title: string;
-  completed: boolean;
+  user: number;
+  text: string;
+  likes: number;
+  link: string;
 }

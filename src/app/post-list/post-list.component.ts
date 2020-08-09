@@ -3,15 +3,21 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  EventEmitter,
   HostListener,
+  Inject,
   OnDestroy,
   OnInit,
+  Output,
   ViewChild
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { switchMap, takeUntil } from 'rxjs/operators';
-import { fromFetch } from 'rxjs/fetch';
+import { filter, takeUntil } from 'rxjs/operators';
 import { Post } from '../core/models';
+import { select, Store } from '@ngrx/store';
+import { selectPostList } from '../core/store/selectors/post.selectors';
+import { GetPosts } from '../core/store/actions/post.actions';
+import { WINDOW } from '../core/services';
 
 @Component({
   selector: 'app-post-list',
@@ -21,24 +27,43 @@ import { Post } from '../core/models';
 })
 export class PostListComponent implements OnInit, OnDestroy {
   @ViewChild('scrollBlock') scrollBlock: ElementRef;
+  @Output() clickPost: EventEmitter<any> = new EventEmitter<any>();
 
-  items: Post[];
+  posts: Post[] = [];
+  posts$: Observable<Post[]> = this.store.pipe(select(selectPostList));
 
   private start = 0;
-  private limit = 70;
+  private limit = 30;
 
   private readonly unsubscribe$: Subject<void> = new Subject<void>();
 
-  constructor(private readonly cdf: ChangeDetectorRef) {}
+  constructor(
+    @Inject(WINDOW) private readonly window: Window,
+    private readonly store: Store,
+    private readonly cdf: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
-    this.getTodos()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((todos: Post[]) => {
-        this.items = todos;
-        this.limit = 10;
-        this.cdf.detectChanges();
+    this.posts$
+      .pipe(
+        filter((posts) => Array.isArray(posts)),
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((posts: Post[]) => {
+        if (posts.length !== 0) {
+          this.posts.push(...posts);
+          this.start = 30;
+          this.limit = 10;
+          this.cdf.detectChanges();
+        }
       });
+
+    this.store.dispatch(
+      new GetPosts({
+        start: this.start,
+        limit: this.limit
+      })
+    );
   }
 
   ngOnDestroy(): void {
@@ -46,31 +71,26 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  @HostListener('window:scroll', ['$event']) private onScroll($event: Event): void {
-    const [_, window] = ($event as any).path;
-    const contentHeight = this.scrollBlock.nativeElement.offsetHeight;
-    const scrollHeight = window.pageYOffset + window.innerHeight;
+  @HostListener('window:scroll', ['$event']) private onScroll(): void {
+    const contentHeight = this.scrollBlock.nativeElement.scrollHeight;
+    const scrollHeight = this.window.pageYOffset + this.window.innerHeight;
 
     if (scrollHeight >= contentHeight) {
-      this.start += 10;
-      this.getTodos()
-        .pipe(takeUntil(this.unsubscribe$))
-        .subscribe((res) => {
-          this.items.push(...res);
-          this.cdf.detectChanges();
-        });
+      this.store.dispatch(
+        new GetPosts({
+          start: this.start,
+          limit: this.limit
+        })
+      );
+      this.posts$.subscribe((posts: Post[]) => {
+        if (posts.length !== 0) {
+          this.start += 10;
+        }
+      });
     }
   }
 
-  private getTodos(): Observable<Post[]> {
-    return fromFetch(
-      `http://localhost:4200/api/posts?start=${this.start}&limit=${this.limit}`
-    ).pipe(
-      switchMap((res: Response) => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
-    );
+  onClickPost(post: Post): void {
+    this.clickPost.emit(post);
   }
 }

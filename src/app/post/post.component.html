@@ -8,20 +8,23 @@
       />
     </div>
     <div class="user-post__content ml-3">
-      <span class="user-post__content_name">Name Surname</span>
-      <span class="user-post__content_link">@link</span>
-      <span class="user-post__content_text mt-3">{{ post.title }}</span>
+      <span class="user-post__content_name">{{ post.user }}</span>
+      <span class="user-post__content_link">{{ post.link }}</span>
+      <span class="user-post__content_text mt-3">{{ post.text }}</span>
     </div>
   </div>
   <div class="user-post__activity d-flex justify-content-around mt-3">
-    <span>
-      <i class="i-comment i-comment-dims"></i>
-    </span>
-    <span>
-      <i class="i-like i-like-dims"></i>
-    </span>
-    <span>
-      <i class="i-repost i-repost-dims"></i>
-    </span>
+    <div class="d-flex align-items-center">
+      <i class="i-comment i-comment-dims mr-2"></i>
+      <span>{{ post.likes }}</span>
+    </div>
+    <div class="d-flex align-items-center">
+      <i class="i-like i-like-dims mr-2"></i>
+      <span>1</span>
+    </div>
+    <div class="d-flex align-items-center">
+      <i class="i-repost i-repost-dims mr-2"></i>
+      <span>2</span>
+    </div>
   </div>
 </article>

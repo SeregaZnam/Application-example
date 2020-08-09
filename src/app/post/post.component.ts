@@ -8,7 +8,7 @@ import { Post } from '../core/models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PostComponent implements OnInit {
-  @Input() post: Post;
+  @Input() post!: Post;
 
   ngOnInit(): void {}
 }
