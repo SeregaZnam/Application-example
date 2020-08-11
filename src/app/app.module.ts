@@ -10,12 +10,14 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { appReducers } from './core/store/reducers/app.reducers';
 import { PostEffects } from './core/store/effects/post.effects';
+import {LoginPageModule} from './login-page';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    LoginPageModule,
     CoreModule.forRoot(),
     StoreModule.forRoot(appReducers, {
       runtimeChecks: {

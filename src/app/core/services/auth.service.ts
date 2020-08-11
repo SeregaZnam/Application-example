@@ -11,7 +11,7 @@ export class AuthService {
   constructor(private readonly http: HttpClient) {}
 
   signIn(login: string, password: string): Observable<SignInResponse> {
-    const url = environment.api + '/api/sign-in';
+    const url = environment.api + '/api/auth';
     return this.http.post<SignInResponse>(url, { login, password });
   }
 }

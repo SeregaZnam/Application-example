@@ -11,7 +11,7 @@ export class PostService {
   constructor(private readonly http: HttpClient) {}
 
   getPosts(start: number, limit: number): Observable<Post[]> {
-    const url = environment.api + '/api/posts';
+    const url = environment.api + '/api/post';
     return this.http.get<Post[]>(url, {
       params: {
         start: start.toString(),
