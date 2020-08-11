@@ -1,0 +1,11 @@
+<app-header></app-header>
+<div class="container">
+  <main role="main">
+    <section class="row">
+      <app-profile-panel class="col-2"></app-profile-panel>
+      <app-post-list (clickPost)="onClickPost($event)" class="col-5"></app-post-list>
+      <app-display-post [post]="activePost" class="col-5"></app-display-post>
+    </section>
+  </main>
+</div>
+<app-footer></app-footer>

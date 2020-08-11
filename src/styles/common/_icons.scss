@@ -1,0 +1,26 @@
+$DIST_ASSETS_IMAGE: '/assets/icons';
+$prefix: 'i';
+$icons: (
+  'overview': (18px, 18px),
+  'devices': (18px, 18px),
+  'analytics': (18px, 18px),
+  'rules': (18px, 18px),
+  'gallery': (18px, 18px),
+  'history': (18px, 18px),
+  'settings': (20px, 22px),
+  'comment': (20px, 20px),
+  'like': (20px, 20px),
+  'repost': (20px, 20px)
+);
+
+// For using images you must put classes i-${img} i-${img}-dims
+@each $icon, $size in $icons {
+  .#{$prefix}-#{$icon} {
+    background: url('#{$DIST_ASSETS_IMAGE}/#{$icon}.svg') center no-repeat;
+    &-dims {
+      display: inline-block;
+      width: nth($size, 1);
+      height: nth($size, 2);
+    }
+  }
+}

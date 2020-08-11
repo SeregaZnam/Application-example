@@ -1,0 +1,16 @@
+<section class="display-post">
+  <!--  <input type="file" (change)="onFileSelected($event)" />-->
+  <article *ngIf="post">
+    <h2>{{ post.user }}</h2>
+    <h3>{{ post.link }}</h3>
+    <p>{{ post.text }}</p>
+  </article>
+  <button (click)="getFile()">get file</button>
+  <pdf-viewer
+    [src]="pdfSrc$ | async"
+    [render-text]="true"
+    [show-all]="true"
+    [original-size]="false"
+    [autoresize]="true"
+  ></pdf-viewer>
+</section>
